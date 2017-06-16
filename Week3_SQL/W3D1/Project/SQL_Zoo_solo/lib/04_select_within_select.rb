@@ -75,13 +75,21 @@ end
 def neighbors_of_certain_b_countries
   # List the name and continent of countries in the continents containing
   # 'Belize', 'Belgium'.
+
   execute(<<-SQL)
   SELECT
     name, continent
   FROM
     countries
   WHERE
-     name = 'Belize', name = 'Belgium' 
+    continent IN (
+      SELECT
+        continent
+      FROM
+        countries
+      WHERE
+        name IN ('Belgium', 'Belize')
+    )
   SQL
 end
 
@@ -125,6 +133,6 @@ def sparse_continents
   FROM
     countries
   WHERE
-    population <
+    population < 
   SQL
 end
