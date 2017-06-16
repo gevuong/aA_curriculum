@@ -5,22 +5,49 @@ require 'active_support/inflector'
 
 class SQLObject
   def self.columns
-    # ...
+    return @columns if @columns
+    columns = DBConnection.execute2(<<-SQL)
+      SELECT
+        *
+      FROM
+        #{self.table_name}
+    SQL
+    @columns = columns.first.map!(&:to_sym)
+    # returns array of symbols which are col names
   end
 
   def self.finalize!
+    self.columns.each do |column|
+      define_method("#{column}=") do |value|
+          # ivar = instance_variable_set("@#{column}", value)
+          # every instance of a model is a column of the table
+        self.attributes[column] = value
+      end
+
+      define_method("#{column}") do
+        # instance_variable_get("@#{column}")
+        self.attributes[column]
+      end
+    end
+
   end
 
-  def self.table_name=(table_name)
-    # ...
+  def self.table_name=(table_name) # class setter method
+    @table_name = table_name
   end
 
-  def self.table_name
-    # ...
+  def self.table_name # class getter method
+    @table_name ||= self.name.tableize
+    unless @table_name
+      self.name.tableize
+    else
+      @table_name
+    end
+    # alternative: @table_name || self.name.tableize
   end
 
   def self.all
-    # ...
+
   end
 
   def self.parse_all(results)
@@ -32,11 +59,20 @@ class SQLObject
   end
 
   def initialize(params = {})
-    # ...
+    # p self # returns Cat object
+    # p self.class # returns Cat class
+    params.each do |attr_name, val|
+      if self.class.columns.include?(attr_name.to_sym)
+        self.send("#{attr_name}=", val)
+      else
+        raise 'unknown attribute #{attr_name}'
+      end
+    end
   end
 
   def attributes
-    # ...
+    # p AttrAccessorObject.my_attr_accessor(*names)
+    @attributes ||= {}
   end
 
   def attribute_values
