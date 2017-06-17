@@ -25,13 +25,14 @@ def continents
     SELECT DISTINCT
       continent
     FROM
-      countries 
+      countries
   SQL
 end
 
 def africa_gdp
   # Give the total GDP of Africa.
   execute(<<-SQL)
+
   SQL
 end
 

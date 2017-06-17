@@ -47,11 +47,20 @@ class SQLObject
   end
 
   def self.all
+    results = DBConnection.execute(<<-SQL)
+    SELECT
+      #{table_name}.*
+    FROM
+      #{table_name}
+    SQL
 
+    self.parse_all(results)
   end
 
   def self.parse_all(results)
-    # ...
+    # p results # array of hashes
+    # p self  # returns class
+    results.map { |result| self.new(result) }
   end
 
   def self.find(id)
@@ -65,7 +74,7 @@ class SQLObject
       if self.class.columns.include?(attr_name.to_sym)
         self.send("#{attr_name}=", val)
       else
-        raise 'unknown attribute #{attr_name}'
+        raise "unknown attribute '#{attr_name}'"
       end
     end
   end
