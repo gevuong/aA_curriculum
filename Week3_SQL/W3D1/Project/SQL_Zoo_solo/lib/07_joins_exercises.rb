@@ -174,7 +174,7 @@ def films_by_cast_size
   WHERE
     movies.yr = 1978
   GROUP BY
-    movies.id
+    movies.id -- you would think every movies.id is unique, but by grouping it, movies.id has many actors, so you are able to count number of actors in that particular movie ( or corresponding movies.id)...
   ORDER BY
     COUNT(*) DESC, movies.title ASC
   SQL
