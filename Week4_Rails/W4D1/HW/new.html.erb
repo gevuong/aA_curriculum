@@ -1,0 +1,43 @@
+<h1> Library </h1>
+<!--
+action: url to which we want to send data
+method: http method we want to use
+-->
+
+<form action="/books" method="post">
+<!-- alternative: actions="<%= books_url %>" -->
+
+
+  <label for="title">Title</label>
+  <input id="title" type="text" name="book[title]">
+<!-- want nested attributes under key of book -->
+  <br>
+
+  <label for="author">Author</label>
+  <input id="author" type="text" name="book[author]">
+
+  <br>
+
+  <label for="year">Year</label>
+  <input id="year" type="text" name="book[year]">
+  <!-- change type="date", you get fancy calendar -->
+  <br>
+
+  <label for="category">Category</label>
+
+  # dropdown menu created under select
+  <select id="category" name="book[category]">
+    <options disabled selected>-- Please Select --</options>
+    <options value="Fiction">Fiction</options>
+    <options value="Non-Fiction">Fiction</options>
+    <options value="Memoir">Memoir</options>
+  </select>
+
+  <br><br>
+
+  <label for="description">Description</label>
+  <textarea name="book[description]"></textarea>
+
+  #adds a button called Add Book to library. It packages all info in form and makes a post request action
+  <input type="submit" value="Add book to library"
+</form>
