@@ -3,6 +3,7 @@
 action: url to which we want to send data
 method: http method we want to use
 -->
+<%= render 'form', action: :new, book: @book %>
 
 <form action="/books" method="post">
 <!-- alternative: actions="<%= books_url %>" -->

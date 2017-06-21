@@ -1,0 +1,51 @@
+<h1> Library </h1>
+<!--
+action: url to which we want to send data
+method: http method we want to use
+-->
+
+<%= render 'form', book: @book, action: :edit %>
+
+# browser can only make get and post request, not patch.
+<form action="<%= books_url(@book) %>" method="post">
+<!-- alternative: actions="<%= books_url %>" -->
+<input type="hidden" name="_method" value="PATCH">
+# need hidden input that allows us to make that patch
+
+
+  <label for="title">Title</label>
+  <input id="title" type="text" name="book[title]" value="<%= @book.title%>">
+<!-- want nested attributes under key of book -->
+  <br>
+
+  <label for="author">Author</label>
+  <input id="author" type="text" name="book[author]" value="<%= @book.author %>">
+
+  <br>
+
+  <label for="year">Year</label>
+  <input id="year" type="text" name="book[year]" value="<%= @book.year %>">
+  <!-- change type="date", you get fancy calendar -->
+  <br>
+
+  <label for="category">Category</label>
+
+  # dropdown menu created under select
+  <select id="category" name="book[category]">
+    # always display the selected one
+    <options disabled>-- Please Select --</options>
+    <options value="Fiction" <%= @book.category == "Fiction" ? "selected" : ""%> >Fiction</options>
+    <options value="Non-Fiction" <%= @book.category == "Non-Fiction" ? "selected" : ""%> >Fiction</options>
+    <options value="Memoir" <%= @book.category == "Memoir" ? "selected" : ""%> >Memoir</options>
+  </select>
+
+  <br><br>
+
+  <label for="description">Description</label>
+  <textarea name="book[description]">
+    <%= @book.description %>
+  </textarea>
+
+  #adds a button called Add Book to library. It packages all info in form and makes a post request action
+  <input type="submit" value="update book"
+</form>
