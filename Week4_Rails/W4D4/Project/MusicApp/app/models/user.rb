@@ -5,7 +5,7 @@ class User < ApplicationRecord
 after_initialize :ensure_session_token # before_validation okay?
 
 attr_reader :password
-# setter method to update password
+# setter method to set the password_digest attribute using BCrypt.
   def password=(password)
     @password = password
     self.password_digest = BCrypt::Password.create(password)
